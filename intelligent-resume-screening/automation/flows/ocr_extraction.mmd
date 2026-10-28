@@ -1,0 +1,23 @@
+flowchart TD
+    A["Open PDF with PyMuPDF"] --> B{"Encrypted, corrupt or too many pages?"}
+    B -- Yes --> F1["Fail with clear message"]
+    B -- No --> C["Read text layer of every page"]
+    C --> D{"Page has at least MIN_TEXT_CHARS_PER_PAGE characters?"}
+    D -- Yes --> E["Keep embedded text"]
+    D -- No --> G{"OCR enabled?"}
+    G -- No --> W1["Warning: little text and OCR disabled"]
+    G -- Yes --> H{"Tesseract found?"}
+    H -- No --> W2["Warning: OCR unavailable"]
+    H -- Yes --> I["Render page to image at OCR_DPI"]
+    I --> J["pytesseract image_to_data"]
+    J --> K["Join words into lines and average word confidence"]
+    K --> L{"Mean confidence below OCR_LOW_CONFIDENCE?"}
+    L -- Yes --> W3["Flag for manual review"]
+    L -- No --> M["Merge page texts"]
+    E --> M
+    W1 --> M
+    W2 --> M
+    W3 --> M
+    M --> N{"Any text at all?"}
+    N -- No --> F2["Fail: no extractable text"]
+    N -- Yes --> O["Return text, method, confidence, warnings"]

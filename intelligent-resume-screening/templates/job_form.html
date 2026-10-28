@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit job' if job else 'New job' }}{% endblock %}
+{% block content %}
+<h1 class="page-title h3 mb-3">{{ 'Edit job' if job else 'Create job description' }}</h1>
+<script type="application/json" id="job-data">{{ job|tojson if job else 'null' }}</script>
+<div class="card p-4">
+  <div class="row g-3">
+    <div class="col-md-8"><label class="form-label" for="title">Job title *</label>
+      <input id="title" class="form-control" maxlength="150" required></div>
+    <div class="col-md-2"><label class="form-label" for="min_exp">Min. experience (yrs)</label>
+      <input id="min_exp" type="number" min="0" max="50" step="0.5" value="0" class="form-control"></div>
+    <div class="col-md-2"><label class="form-label" for="education">Education</label>
+      <select id="education" class="form-select">
+        <option value="">No requirement</option><option>Diploma</option><option>Bachelor's degree</option>
+        <option>Master's degree</option><option>Doctorate</option></select></div>
+    <div class="col-12"><label class="form-label" for="description">Description</label>
+      <textarea id="description" class="form-control" rows="4" maxlength="10000"></textarea></div>
+  </div>
+  <hr>
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h2 class="h6 mb-0">Required skills and weights</h2>
+    <div><span class="me-2">Total: <strong id="total">0</strong>%</span>
+      <button type="button" class="btn btn-sm btn-outline-primary" id="normalize">Normalize to 100%</button>
+      <button type="button" class="btn btn-sm btn-outline-primary" id="add-skill">+ Add skill</button></div>
+  </div>
+  <p class="text-muted small">Weights are scaled automatically so they total exactly 100% when saved.
+    Known aliases (e.g. "Microsoft Excel" = Excel) are recognised.</p>
+  <div id="skills"></div>
+  <div class="mt-4">
+    <button class="btn btn-primary" id="save">Save job</button>
+    <a class="btn btn-outline-secondary" href="{{ url_for('pages.jobs') }}">Cancel</a>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/job_form.js') }}"></script>{% endblock %}

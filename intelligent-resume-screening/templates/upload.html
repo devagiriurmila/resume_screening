@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Upload resumes{% endblock %}
+{% block content %}
+<h1 class="page-title h3 mb-3">Upload Resumes</h1>
+{% if not jobs %}
+<div class="card p-4 text-center">Create a <a href="{{ url_for('pages.job_new') }}">job description</a> first.</div>
+{% else %}
+<div class="card p-4">
+  <label class="form-label" for="job">Screen against job</label>
+  <select id="job" class="form-select mb-3">
+    {% for j in jobs %}<option value="{{ j.id }}">{{ j.title }}</option>{% endfor %}
+  </select>
+  <div id="drop" class="dropzone mb-3" tabindex="0" role="button" aria-label="Choose PDF files">
+    <div class="h5">Drag &amp; drop PDF resumes here, or click to browse</div>
+    <div class="text-muted small">PDF only &middot; up to 10 MB each &middot; scanned PDFs are read with OCR</div>
+    <input id="files" type="file" accept="application/pdf,.pdf" multiple hidden>
+  </div>
+  <div id="queue" class="mb-3"></div>
+  <button class="btn btn-primary" id="start" disabled>Upload &amp; process</button>
+  <a class="btn btn-outline-primary d-none" id="view-results" href="#">View results</a>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/upload.js') }}"></script>{% endblock %}

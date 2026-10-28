@@ -1,0 +1,14 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+database/*.db
+uploads/*
+outputs/*
+!uploads/.gitkeep
+!outputs/.gitkeep
+sample_data/resumes/
+.idea/
+.vscode/

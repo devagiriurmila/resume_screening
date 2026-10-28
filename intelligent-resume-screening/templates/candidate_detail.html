@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ c.name or 'Candidate' }}{% endblock %}
+{% block content %}
+<a href="{{ url_for('pages.candidates') }}" class="small">&larr; Back to results</a>
+<div class="d-flex flex-wrap justify-content-between align-items-center my-2">
+  <h1 class="page-title h3 mb-0">{{ c.name or 'Name not detected' }}</h1>
+  <div class="h3 mb-0 text-primary">{{ '%.1f'|format(c.score) }}% <span class="h6 text-muted">skill match</span></div>
+</div>
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="card p-3 mb-3"><h2 class="h6">Extracted details</h2>
+      <dl class="row small mb-0">
+        <dt class="col-4">Email</dt><dd class="col-8">{{ c.email or 'Not detected' }}</dd>
+        <dt class="col-4">Phone</dt><dd class="col-8">{{ c.phone or 'Not detected' }}</dd>
+        <dt class="col-4">Experience</dt><dd class="col-8">{% if c.experience_years is not none %}{{ c.experience_years }} yrs ({{ c.experience_method }}){% else %}Not detected{% endif %}</dd>
+        <dt class="col-4">Education</dt><dd class="col-8">{{ c.education or 'Not detected' }}</dd>
+        <dt class="col-4">All skills</dt><dd class="col-8">{% for s in c.skills %}<span class="badge badge-skill">{{ s }}</span>{% else %}None detected{% endfor %}</dd>
+        <dt class="col-4">Source</dt><dd class="col-8">{{ c.original_filename }} ({{ c.page_count }} page{{ 's' if c.page_count != 1 }}, {{ c.extraction_method }}{% if c.ocr_confidence is not none %}, OCR {{ c.ocr_confidence }}%{% endif %})</dd>
+        <dt class="col-4">Job</dt><dd class="col-8">{{ c.job_title }} (session #{{ c.session_id }})</dd>
+      </dl></div>
+    <div class="card p-3 mb-3"><h2 class="h6">Human review</h2>
+      {% if c.review_reasons %}<div class="notice mb-2"><strong>Flagged for review:</strong><ul class="mb-0">
+        {% for r in c.review_reasons %}<li>{{ r }}</li>{% endfor %}</ul></div>{% endif %}
+      <label class="form-label small" for="review-status">Decision (made by a person)</label>
+      <select id="review-status" class="form-select mb-2" data-id="{{ c.candidate_id }}">
+        {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if s == c.review_status }}>{{ s.replace('_',' ').title() }}</option>{% endfor %}
+      </select>
+      <label class="form-label small" for="review-note">Reviewer note</label>
+      <textarea id="review-note" class="form-control mb-2" rows="3" maxlength="2000">{{ c.reviewer_note }}</textarea>
+      <button class="btn btn-primary btn-sm" id="save-review">Save review</button>
+      <button class="btn btn-outline-danger btn-sm float-end" id="delete-candidate">Delete data</button>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card p-3 mb-3"><h2 class="h6">Scoring explanation</h2>
+      <p class="small text-muted">Score = sum of weights of required skills found in the resume.</p>
+      <div class="table-responsive"><table class="table table-sm align-middle">
+        <thead><tr><th>Required skill</th><th>Weight</th><th>Found?</th><th>Points</th><th>Evidence</th></tr></thead>
+        <tbody>{% for b in c.breakdown %}<tr>
+          <td>{{ b.skill }}</td><td>{{ '%g'|format(b.weight) }}%</td>
+          <td>{{ 'Yes' if b.matched else 'Not found (unconfirmed)' }}</td><td>{{ '%g'|format(b.points) }}</td>
+          <td class="small text-muted">{% if b.matched %}"{{ b.evidence }}"{% if b.note %} - {{ b.note }}{% endif %}<br>{{ b.snippet }}{% endif %}</td></tr>{% endfor %}
+          <tr class="table-light"><th>Total</th><th>100%</th><th></th><th>{{ '%g'|format(c.score) }}</th><th></th></tr></tbody>
+      </table></div>
+      {% if c.requirement_checks %}<h3 class="h6 mt-2">Other requirements (informational, not scored)</h3>
+      <ul class="small">{% for key, chk in c.requirement_checks.items() %}
+        <li><strong>{{ key.title() }}:</strong> {{ chk.status.replace('_',' ') }} - {{ chk.note }}</li>{% endfor %}</ul>{% endif %}
+      <details class="small"><summary>Limitations of this score</summary>
+        <ul class="mt-2">{% for l in limitations %}<li>{{ l }}</li>{% endfor %}</ul></details>
+    </div>
+    {% if c.warnings or c.logs %}<div class="card p-3 mb-3"><h2 class="h6">Processing log</h2>
+      <ul class="small mb-0">{% for l in c.logs %}<li><span class="badge {{ 'bg-danger' if l.level == 'ERROR' else 'bg-warning text-dark' if l.level == 'WARNING' else 'bg-secondary' }}">{{ l.level }}</span> {{ l.message }}</li>{% endfor %}</ul></div>{% endif %}
+    <div class="card p-3"><h2 class="h6">Extracted resume text</h2>
+      <div class="resume-text">{{ c.extracted_text }}</div></div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/candidate_detail.js') }}"></script>{% endblock %}

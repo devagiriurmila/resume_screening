@@ -1,0 +1,35 @@
+flowchart LR
+    subgraph Users
+        R["Recruiter (browser)"]
+        BOT["UiPath robot"]
+    end
+    subgraph WebApp["Flask web application (localhost:5000)"]
+        UI["Bootstrap + JavaScript pages"]
+        API["REST API (JSON)"]
+        ENG["Resume processing engine"]
+        REP["Report service (pandas + openpyxl)"]
+    end
+    subgraph Engine["Python services"]
+        PARSE["PyMuPDF text extraction"]
+        OCR["Tesseract OCR"]
+        EXTRACT["Contact, education, experience extractors"]
+        MATCH["Skill matcher (weighted score)"]
+    end
+    DB[("SQLite database")]
+    FILES["PDF resumes (input folder)"]
+    XLSX["Excel / CSV reports (outputs folder)"]
+    DEMO["Local demo job page"]
+    SEL["Selenium scraper"]
+
+    R --> UI --> API
+    BOT -->|"Start Process: process_resumes.py"| API
+    FILES --> BOT
+    API --> ENG --> PARSE
+    PARSE -->|"scanned page"| OCR
+    PARSE --> EXTRACT --> MATCH
+    OCR --> EXTRACT
+    ENG <--> DB
+    API <--> DB
+    API --> REP --> XLSX
+    BOT -->|"collect report"| XLSX
+    DEMO --> SEL -->|"POST /api/jobs"| API

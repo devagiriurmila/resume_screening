@@ -1,0 +1,17 @@
+flowchart TD
+    A["Error occurs"] --> B{"Where?"}
+    B -- "File validation" --> C["Return per-file rejected status with reason; continue with next file"]
+    B -- "PDF unreadable or protected" --> D["Mark resume failed, log ERROR, continue batch"]
+    B -- "OCR missing or failed" --> E["Add warning; fail only if no text at all"]
+    B -- "Database error" --> F["Transaction rolls back; API returns 500 JSON; log stack trace"]
+    B -- "Server unreachable (RPA)" --> G["Retry with growing delay up to --retries"]
+    B -- "HTTP 5xx (RPA)" --> G
+    B -- "HTTP 4xx (RPA)" --> H["No retry: record failure reason"]
+    G -- "still failing" --> I["Exit code 2 and UiPath SystemException"]
+    C --> J["Summary lists failures"]
+    D --> J
+    E --> J
+    H --> J
+    I --> K["Robot logs error and stops safely"]
+    J --> L["Human reviews failed files"]
+    K --> L

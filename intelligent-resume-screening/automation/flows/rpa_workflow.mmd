@@ -1,0 +1,16 @@
+flowchart TD
+    S(["Start: UiPath Main.xaml"]) --> A["Read config: folders, job title, base URL, retry count"]
+    A --> B["Check input folder exists and contains PDFs"]
+    B -- "none" --> E1["Log warning and finish with 0 files"]
+    B --> C["Start Process: python scripts/process_resumes.py --start-server"]
+    C --> D{"Exit code"}
+    D -- "0" --> F["Parse JSON summary from standard output"]
+    D -- "1" --> G["Partial failures: log each failed file"]
+    D -- "2" --> H{"Retry attempts left?"}
+    H -- Yes --> C
+    H -- No --> E2["Throw BusinessRuleException or SystemException and send alert"]
+    G --> F
+    F --> I["Verify Excel report exists in output folder"]
+    I --> J["Optional: Excel activities to open and log row count"]
+    J --> K["Log total, successful, failed"]
+    K --> L(["End"])

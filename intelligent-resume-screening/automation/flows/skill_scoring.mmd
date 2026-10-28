@@ -1,0 +1,22 @@
+flowchart TD
+    A["Job skills with raw weights"] --> B["Validate: names not empty, weights above 0, no duplicates"]
+    B --> C["Scale weights so total = 100.00"]
+    C --> D["Resolve each skill to dictionary entry or custom term"]
+    E["Resume text"] --> F["Lowercase and collapse whitespace"]
+    D --> G
+    F --> G["For each required skill: whole-word regex on name and aliases"]
+    G --> H{"Context alias such as py?"}
+    H -- Yes --> I{"Context word such as pandas also present?"}
+    I -- Yes --> J["Skill found"]
+    I -- No --> K["Skill not found"]
+    H -- No --> L{"Whole-word match?"}
+    L -- Yes --> J
+    L -- No --> K
+    J --> M["points = weight"]
+    K --> N["points = 0 (unconfirmed)"]
+    M --> O["Score = sum of points"]
+    N --> O
+    O --> P["Store breakdown, evidence and limitations"]
+    P --> Q{"Score below REVIEW_THRESHOLD?"}
+    Q -- Yes --> R["Flag for human review (no rejection)"]
+    Q -- No --> S["No flag from score"]

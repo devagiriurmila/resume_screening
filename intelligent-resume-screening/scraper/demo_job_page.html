@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo Job Posting - Data Analyst (Fictional)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: "Segoe UI", Arial, sans-serif; background: #f5f8fd; color: #1c2b4a; margin: 0; padding: 2rem; }
+    main { max-width: 760px; margin: auto; background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(13,110,253,.12); }
+    h1 { color: #0d6efd; } li { margin: .3rem 0; } .tag { color: #5b6b8c; font-size: .9rem; }
+  </style>
+</head>
+<body>
+<main data-testid="job-posting">
+  <p class="tag">Fictional posting for a local demo. No real company.</p>
+  <h1 data-testid="job-title">Data Analyst - Reporting &amp; Automation</h1>
+  <section>
+    <h2>About the role</h2>
+    <p data-testid="job-description">We are looking for an analyst to prepare weekly reports, query company databases,
+      automate repetitive spreadsheet work and explain results clearly to colleagues.</p>
+  </section>
+  <section>
+    <h2>Requirements</h2>
+    <p>Minimum experience: <span data-testid="min-experience" data-value="2">2 years</span></p>
+    <p>Education: <span data-testid="education">Bachelor's degree</span></p>
+    <h3>Required skills (importance)</h3>
+    <ul data-testid="skills-list">
+      <li data-testid="skill-item" data-skill="Python" data-weight="35">Python - 35</li>
+      <li data-testid="skill-item" data-skill="SQL" data-weight="30">SQL - 30</li>
+      <li data-testid="skill-item" data-skill="Excel" data-weight="20">Excel - 20</li>
+      <li data-testid="skill-item" data-skill="Communication" data-weight="15">Communication - 15</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

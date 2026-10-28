@@ -1,0 +1,24 @@
+:root { --brand: #0d6efd; --brand-dark: #0a4fb3; --brand-soft: #eaf2ff; --ink: #1c2b4a; }
+body { background: #f5f8fd; color: var(--ink); font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
+.navbar-brand { font-weight: 700; letter-spacing: .2px; }
+.navbar.bg-brand { background: linear-gradient(90deg, var(--brand-dark), var(--brand)); }
+.navbar .nav-link { color: rgba(255,255,255,.85); }
+.navbar .nav-link.active, .navbar .nav-link:hover { color: #fff; }
+.card { border: 0; border-radius: .75rem; box-shadow: 0 2px 10px rgba(13,110,253,.08); }
+.stat-card .stat-value { font-size: 2rem; font-weight: 700; color: var(--brand); }
+.stat-card .stat-label { color: #5b6b8c; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; }
+.page-title { font-weight: 700; }
+.table thead th { background: var(--brand-soft); color: var(--brand-dark); white-space: nowrap; cursor: default; }
+.table th.sortable { cursor: pointer; user-select: none; }
+.badge-skill { background: var(--brand-soft); color: var(--brand-dark); font-weight: 500; margin: 0 .2rem .2rem 0; }
+.badge-missing { background: #fff4e5; color: #8a5300; font-weight: 500; margin: 0 .2rem .2rem 0; }
+.score-bar { height: .55rem; border-radius: 1rem; background: #dde7f8; min-width: 80px; }
+.score-bar > div { height: 100%; border-radius: 1rem; background: var(--brand); }
+.resume-text { white-space: pre-wrap; max-height: 460px; overflow: auto; background: #fbfcff; border: 1px solid #dde7f8;
+  border-radius: .5rem; padding: 1rem; font-family: Consolas, "Courier New", monospace; font-size: .85rem; }
+.notice { background: #fff9e6; border-left: 4px solid #f0ad00; padding: .75rem 1rem; border-radius: .25rem; font-size: .9rem; }
+.skill-row .form-control { min-width: 0; }
+.dropzone { border: 2px dashed #9dbdf5; border-radius: .75rem; background: #fff; padding: 2rem; text-align: center; cursor: pointer; }
+.dropzone.drag { background: var(--brand-soft); border-color: var(--brand); }
+.nd { color: #8a96ad; font-style: italic; }
+footer { color: #6b7a99; font-size: .8rem; }

@@ -1,0 +1,10 @@
+{
+  "PythonExe": "C:\\Users\\YOUR_NAME\\intelligent-resume-screening\\venv\\Scripts\\python.exe",
+  "ProjectRoot": "C:\\Users\\YOUR_NAME\\intelligent-resume-screening",
+  "ScriptPath": "C:\\Users\\YOUR_NAME\\intelligent-resume-screening\\scripts\\process_resumes.py",
+  "InputFolder": "C:\\RPA\\ResumeScreening\\Input",
+  "OutputFolder": "C:\\RPA\\ResumeScreening\\Output",
+  "BaseUrl": "http://127.0.0.1:5000",
+  "JobId": 1,
+  "MaxRetries": 3
+}

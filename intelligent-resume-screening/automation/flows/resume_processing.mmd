@@ -1,0 +1,19 @@
+flowchart TD
+    A["User or robot uploads PDF"] --> B{"Extension is .pdf and MIME allowed?"}
+    B -- No --> X1["Reject with validation error"]
+    B -- Yes --> C["Save under random UUID name and count bytes"]
+    C --> D{"Size within limit and starts with %PDF?"}
+    D -- No --> X2["Delete file and reject"]
+    D -- Yes --> E{"Same SHA-256 already in this session?"}
+    E -- Yes --> X3["Reject as duplicate"]
+    E -- No --> F["Create resume record (status: processing)"]
+    F --> G["Extract text and OCR if needed"]
+    G -- "unreadable or protected" --> H["Mark failed, store error, write log"]
+    G --> I["Normalise text"]
+    I --> J["Extract name, email, phone, education, experience"]
+    J --> K["Detect skills with dictionary"]
+    K --> L["Score against job skills"]
+    L --> M["Compute review flags (never rejects)"]
+    M --> N[("Save candidate, result and logs in SQLite")]
+    N --> O["Delete uploaded PDF unless KEEP_UPLOADED_FILES=true"]
+    O --> P["Show in dashboard, table and reports"]

@@ -1,0 +1,12 @@
+{
+  "title": "Junior Data Analyst",
+  "description": "Analyse business data, build reports in Excel and SQL, automate repetitive tasks with Python, and present findings clearly to non-technical teams. This is a fictional job used for demonstration.",
+  "min_experience_years": 1,
+  "education_requirement": "Bachelor's degree",
+  "skills": [
+    {"skill": "Python", "weight": 40},
+    {"skill": "SQL", "weight": 25},
+    {"skill": "Excel", "weight": 20},
+    {"skill": "Communication", "weight": 15}
+  ]
+}
